@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head ('Ticket Logger - Usuarios')}"></head>
+
+<body class="d-flex flex-column h-100">
+
+<!-- Insertar el fragmento del header -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <!-- Título dinámico (add/edit) -->
+        <h1 th:text="${user.id == null} ? #{msg.user-form.add} : #{msg.user-form.edit}"></h1>
+
+        <!-- Mensaje de error global -->
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <!-- Formulario -->
+        <form th:action="${user.id == null} ? @{/users/insert} : @{/users/update}"
+              th:object="${user}" method="post" class="mt-3">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label" th:text="#{msg.user-form.username}"></label>
+                <input type="text" id="username" th:field="*{username}" class="form-control"/>
+                <div th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label" th:text="#{msg.user-form.email}"></label>
+                <input type="text" id="email" th:field="*{email}" class="form-control"/>
+                <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
+            </div>
+
+            <!-- Nombre completo -->
+            <div class="mb-3">
+                <label for="fullName" class="form-label" th:text="#{msg.user-form.fullName}"></label>
+                <input type="text" id="fullName" th:field="*{fullName}" class="form-control"/>
+                <div th:if="${#fields.hasErrors('fullName')}" class="text-danger" th:errors="*{fullName}"></div>
+            </div>
+
+            <!-- Roles (selección múltiple). En edición aparecen marcados los roles actuales del usuario -->
+            <div class="mb-3">
+                <label class="form-label d-block" th:text="#{msg.user-form.roles}"></label>
+                <div class="form-check" th:each="role : ${listRoles}">
+                    <input type="checkbox" class="form-check-input"
+                           th:field="*{roleIds}" th:value="${role.id}"/>
+                    <label class="form-check-label"
+                           th:for="${#ids.prev('roleIds')}" th:text="${role.name}"></label>
+                </div>
+                <div th:if="${#fields.hasErrors('roleIds')}" class="text-danger" th:errors="*{roleIds}"></div>
+            </div>
+
+            <!-- Botón submit dinámico -->
+            <button type="submit" class="btn btn-primary"
+                    th:text="${user.id == null} ? #{msg.user-form.create} : #{msg.user-form.update}"></button>
+
+            <!-- Volver al listado -->
+            <a th:href="@{/users}" class="btn btn-secondary" th:text="#{msg.user-form.returnback}"></a>
+
+        </form>
+
+    </div>
+</main>
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+</body>
+</html>
