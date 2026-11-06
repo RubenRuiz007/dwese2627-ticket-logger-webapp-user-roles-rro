@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * CRUD de roles. Desde aquí NO se asignan usuarios a un rol (ni en alta, ni en edición,
- * ni en el detalle): esa relación se gestiona únicamente desde el CRUD de usuarios.
+ * CRUD de roles. Desde aquí NO se asignan usuarios a un rol (ni en alta ni en edición):
+ * esa relación se gestiona únicamente desde el CRUD de usuarios.
  */
 @Controller
 @RequestMapping("/roles")
@@ -128,32 +128,6 @@ public class RoleController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
         return "redirect:/roles";
-    }
-
-    /**
-     * Vista de detalle del rol. Solo muestra los datos del rol, nunca sus usuarios.
-     */
-    @GetMapping("/detail")
-    public String showDetail(@RequestParam("id") Long id,
-                             Model model,
-                             RedirectAttributes redirectAttributes,
-                             Locale locale) {
-        logger.info("Mostrando detalle del rol con ID {}", id);
-        try {
-            Role role = roleDAO.getRoleById(id);
-            if (role == null) {
-                String errorMessage = messageSource.getMessage("msg.role-controller.edit.notfound", null, locale);
-                redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-                return "redirect:/roles";
-            }
-            model.addAttribute("role", role);
-        } catch (Exception e) {
-            logger.error("Error al obtener el detalle del rol con ID {}: {}", id, e.getMessage());
-            String errorMessage = messageSource.getMessage("msg.role-controller.edit.error", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-            return "redirect:/roles";
-        }
-        return "views/role/role-detail";
     }
 
     @PostMapping("/delete")

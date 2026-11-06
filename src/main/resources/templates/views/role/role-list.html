@@ -30,24 +30,18 @@
             <tr th:each="role : ${listRoles}">
                 <td th:text="${role.id}"></td>
                 <td th:text="${role.name}"></td>
-                <td class="text-nowrap">
-                    <div class="d-flex justify-content-center gap-2">
-                        <!-- Detalle -->
-                        <a th:href="@{/roles/detail(id=${role.id})}" class="btn btn-info btn-sm"
-                           th:text="#{msg.role-list.detail}"></a>
+                <td>
+                    <!-- Editar -->
+                    <a th:href="@{/roles/edit(id=${role.id})}" class="btn btn-primary btn-sm"
+                       th:text="#{msg.role-list.edit}"></a>
 
-                        <!-- Editar -->
-                        <a th:href="@{/roles/edit(id=${role.id})}" class="btn btn-primary btn-sm"
-                           th:text="#{msg.role-list.edit}"></a>
-
-                        <!-- Eliminar -->
-                        <form th:action="@{/roles/delete}" method="post" class="m-0">
-                            <input type="hidden" name="id" th:value="${role.id}"/>
-                            <button type="submit" class="btn btn-danger btn-sm"
-                                    th:text="#{msg.role-list.delete}"
-                                    th:onclick="|return confirm('#{msg.role-list.confirm}');|"></button>
-                        </form>
-                    </div>
+                    <!-- Eliminar -->
+                    <form th:action="@{/roles/delete}" method="post" class="d-inline">
+                        <input type="hidden" name="id" th:value="${role.id}"/>
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                th:text="#{msg.role-list.delete}"
+                                th:onclick="|return confirm('#{msg.role-list.confirm}');|"></button>
+                    </form>
                 </td>
             </tr>
             </tbody>

@@ -24,7 +24,7 @@
                 <!-- Menú principal -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/}">Inicio</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/}" th:text="#{msg.nav.home}">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/users}" th:text="#{msg.nav.users}">Usuarios</a>
@@ -42,10 +42,10 @@
                         <img th:src="@{/images/avatar.svg}" alt="avatar" width="40" height="40" class="rounded-circle border border-2 border-primary-subtle">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                        <li><a class="dropdown-item" th:href="@{/profile/edit}">Editar perfil</a></li>
-                        <li><a class="dropdown-item" th:href="@{/profile/change-password}">Cambiar contraseña</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile/edit}" th:text="#{msg.nav.profile.edit}">Editar perfil</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile/change-password}" th:text="#{msg.nav.profile.password}">Cambiar contraseña</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar sesión</a></li>
+                        <li><a class="dropdown-item text-danger" th:href="@{/logout}" th:text="#{msg.nav.logout}">Cerrar sesión</a></li>
                     </ul>
                 </div>
 
@@ -55,7 +55,14 @@
                       th:action="@{''}">
 
 
-                    <label for="langSelect" class="visually-hidden">Idioma</label>
+                    <!-- Conserva id y demás parámetros al cambiar de idioma -->
+                    <input type="hidden"
+                           th:each="p : ${param}"
+                           th:unless="${p.key == 'lang'}"
+                           th:name="${p.key}"
+                           th:value="${p.value[0]}"/>
+
+                    <label for="langSelect" class="visually-hidden" th:text="#{msg.nav.language}">Idioma</label>
                     <select id="langSelect" name="lang" class="form-select form-select-sm" onchange="this.form.submit()">
                         <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
                         <option value="en" th:selected="${#locale.language == 'en'}">English</option>

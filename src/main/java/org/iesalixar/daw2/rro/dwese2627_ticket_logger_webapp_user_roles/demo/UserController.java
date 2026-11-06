@@ -159,29 +159,6 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/detail")
-    public String showDetail(@RequestParam("id") Long id,
-                             Model model,
-                             RedirectAttributes redirectAttributes,
-                             Locale locale) {
-        logger.info("Mostrando detalle del usuario con ID {}", id);
-        try {
-            User user = userDAO.getUserById(id);
-            if (user == null) {
-                String errorMessage = messageSource.getMessage("msg.user-controller.edit.notfound", null, locale);
-                redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-                return "redirect:/users";
-            }
-            model.addAttribute("user", user);
-        } catch (Exception e) {
-            logger.error("Error al obtener el detalle del usuario con ID {}: {}", id, e.getMessage());
-            String errorMessage = messageSource.getMessage("msg.user-controller.edit.error", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-            return "redirect:/users";
-        }
-        return "views/user/user-detail";
-    }
-
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id,
                              RedirectAttributes redirectAttributes,
